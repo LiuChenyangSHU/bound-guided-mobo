@@ -92,7 +92,7 @@ match the configured names exactly; values must be finite.
 
 - Inputs are mapped to the unit hypercube using their configured bounds.
 - Initial designs and candidate pools use SciPy Latin hypercube sampling.
-  Feasibility rejection can alter the stratification of the accepted set.
+  A feasibility predicate filters the sampled designs.
 - BoTorch `SingleTaskGP` fits independent standardized objective outputs with
   exact marginal likelihood optimization, using double precision on the CPU.
 - A finite candidate pool is scored using Monte Carlo log-stabilized expected
@@ -103,7 +103,6 @@ match the configured names exactly; values must be finite.
 
 The workflow stops after the configured recommendation-round budget, or after
 an explicitly configured target is satisfied by a single evaluated design.
-No surrogate-fit statistic is treated as an automatic convergence proof.
 Evaluation failures raise an exception; earlier validated observations remain
 available in the run directory.
 
@@ -120,17 +119,7 @@ python -m pytest -q
 
 Tests cover feasibility sampling, normalization, interpolated response metrics,
 window updates, GP-based recommendation, output validation, and stopping rules.
-For a machine with restricted temporary-directory access, use:
-
-```bash
-python -m pytest -q --basetemp runs/test-temp
-```
-
-Create `runs` first if it does not exist. The analytic example tests software
-execution, not the physical validity of any particular simulator. Seeded runs
-are reproducible within a fixed numerical environment; results can differ
-across dependency versions and platforms. The directly tested dependency
-versions are listed in [requirements-tested.txt](requirements-tested.txt).
+Dependency versions are listed in [requirements-tested.txt](requirements-tested.txt).
 
 ## Citation
 
@@ -142,7 +131,7 @@ branch. Software metadata is available in [CITATION.cff](CITATION.cff).
   author  = {{LiuChenyangSHU}},
   title   = {Simulation MOBO Framework},
   year    = {2026},
-  version = {0.1.0},
+  version = {0.1.1},
   url     = {https://github.com/LiuChenyangSHU/simulation-mobo-framework}
 }
 ```

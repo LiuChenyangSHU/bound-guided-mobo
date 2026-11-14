@@ -4,7 +4,7 @@ type: software
 title: "Simulation MOBO Framework"
 authors:
   - name: "LiuChenyangSHU"
-version: 0.1.0
+version: 0.1.1
 date-released: 2026-11-13
 url: "https://github.com/LiuChenyangSHU/simulation-mobo-framework"
 repository-code: "https://github.com/LiuChenyangSHU/simulation-mobo-framework"

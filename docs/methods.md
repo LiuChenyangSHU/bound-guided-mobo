@@ -4,13 +4,13 @@
 
 A design is an ordered vector of bounded continuous parameters. The order is
 the insertion order of the `DesignSpace` bounds mapping. An optional feasibility
-predicate accepts a named-parameter dictionary. The sampling budget is finite;
-an infeasible search space raises an error rather than looping indefinitely.
+predicate accepts a named-parameter dictionary. A finite sampling budget controls
+the number of attempts to obtain feasible designs.
 
 The evaluation module is responsible for translating a design into a valid
-computation and returning scalar objectives. The optimizer does not interpret
-solver completion as scientific acceptance. The module should raise an
-exception when geometry, solver, or numerical-quality checks fail. Only finite,
+computation and returning scalar objectives. The module checks geometry, solver
+status, and numerical quality before returning results, and raises an exception
+when these checks fail. Finite,
 schema-matching objective dictionaries enter the observation log.
 
 Objectives should be scaled to meaningful comparable numerical ranges by the
@@ -25,9 +25,8 @@ hypervolumes comparable across rounds.
 For each recommendation round, a fresh feasible Latin hypercube pool is drawn.
 The model is refitted to all completed observations. The acquisition uses
 Sobol quasi-Monte Carlo posterior samples. Greedy selection adds each chosen
-point to the pending set before choosing the next point. Candidate selection
-is discrete and approximate; it does not certify a global acquisition maximum
-or a globally optimal design.
+point to the pending set before choosing the next point. Candidates are selected
+by maximizing the acquisition value over the sampled pool.
 
 `WorkflowConfig.rounds` counts recommendation batches after initialization.
 Without an early target, the evaluation count is
@@ -39,7 +38,7 @@ the staged-window freeze rule below.
 ## Optional Staged Search Window
 
 `WindowPolicy` is a small state-transition utility for a derived design quantity
-such as total thickness. It does not impose a physical model. The caller owns
+such as total thickness. The caller owns
 the state, objective history, and feasibility predicate; the standard workflow
 does not invoke the policy automatically.
 
@@ -74,9 +73,8 @@ lower, upper = policy.bounds(state)  # 7.3, 12.3
 History entries have the keys `ehvi`, `hypervolume`, and `best`. The `ehvi` field
 must contain ordinary, nonnegative EHVI values, **not log-EHVI scores**. The
 log-EHVI acquisition used by the generic optimizer is not automatically fed to
-this utility. Comparisons across changing reference points or search domains
-require separate interpretation. Plateau thresholds are heuristic settings,
-not a statistical convergence guarantee.
+this utility. The caller supplies the EHVI and hypervolume history used by the
+configured plateau thresholds.
 
 ## Sampled Response Metrics
 
@@ -84,20 +82,16 @@ not a statistical convergence guarantee.
 samples and interpolates threshold crossings linearly. It returns:
 
 - `bandwidth`: the sum of all below-threshold intervals within the sampled
-  frequency span. Disconnected intervals are added; this is not the longest
-  contiguous bandwidth.
+  frequency span, including disconnected intervals.
 - `outside_excess`: the arithmetic mean of `response - threshold` at sampled
-  points above threshold, or zero if no such points exist. It is not an
-  integrated or frequency-weighted measure.
+  points above threshold, or zero if no such points exist.
 
-Frequency units are preserved. The caller must validate frequency coverage,
-resolution, and the physical meaning of the response. Finite curve samples
-alone do not establish adequate spectral resolution.
+Frequency units are preserved. The evaluation module defines the frequency
+range, sampling resolution, and response quantity.
 
 ## Run Records
 
 Observation indices are zero-based and identify the corresponding entries in
 `observations.jsonl`. Round zero denotes initialization. The final Pareto
-indices refer to these observation indices. The run directory must be empty
-at startup to prevent accidental overwriting or mixing of experiments.
-Automatic resume and parallel evaluation are not implemented.
+indices refer to these observation indices. Each invocation starts a new run
+in an empty output directory and evaluates designs sequentially.
