@@ -4,7 +4,7 @@ type: software
 title: "Bound-Guided MOBO"
 authors:
   - name: "LiuChenyangSHU"
-version: 0.1.2
+version: 0.1.3
 date-released: 2026-11-13
 url: "https://github.com/LiuChenyangSHU/bound-guided-mobo"
 repository-code: "https://github.com/LiuChenyangSHU/bound-guided-mobo"

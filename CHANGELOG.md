@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.2 - 2026-11-13
+## 0.1.3 - 2026-11-13
 
 - Renamed the project to Bound-Guided MOBO.
 - Introduced the bound-informed design discovery concept and core workflow ideas.
