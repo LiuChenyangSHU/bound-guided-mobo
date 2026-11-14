@@ -1,0 +1,8 @@
+# Direct numerical dependencies used for the local validation run.
+# Install the package afterward with: python -m pip install -e ".[test]"
+numpy==2.3.5
+scipy==1.16.3
+torch==2.11.0
+botorch==0.17.2
+gpytorch==1.15.2
+pytest==8.4.2
