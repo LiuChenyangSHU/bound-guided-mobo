@@ -18,4 +18,4 @@ jobs:
       - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
       - run: python -m pip install -e ".[test]"
       - run: python -m pytest -q
-      - run: simulation-mobo --output runs/smoke --rounds 1
+      - run: bound-guided-mobo --output runs/smoke --rounds 1

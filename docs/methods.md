@@ -1,4 +1,19 @@
-# Methods and Interface Contract
+# Bound-Informed Design Discovery
+
+## Design Principle
+
+The framework separates three decisions: where to initialize the search,
+which designs to evaluate next, and when to advance the search interval.
+Physical bounds or engineering knowledge define the initial domain. Bayesian
+recommendation selects promising designs within the active domain. A staged
+window policy translates optimization feedback into interval updates.
+
+In thickness-constrained absorber design, the initial interval can be chosen
+from a thickness-bandwidth relation. Its numerical bounds are supplied through
+`DesignSpace` or `WindowPolicy`. The evaluation module maps a candidate design
+to the objectives used for recommendation, such as bandwidth and negative
+thickness. This structure keeps domain initialization, simulation, and search
+control independently configurable.
 
 ## Design and Evaluation
 

@@ -3,9 +3,9 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "simulation-mobo-framework"
-version = "0.1.1"
-description = "A minimal simulator-agnostic multi-objective Bayesian optimization workflow."
+name = "bound-guided-mobo"
+version = "0.1.2"
+description = "Bound-informed design spaces, Bayesian recommendation, and feedback-driven search-window policies."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
@@ -15,6 +15,7 @@ dependencies = ["numpy>=1.24,<3", "scipy>=1.11,<2", "torch>=2.2,<3", "botorch>=0
 test = ["pytest>=8,<10"]
 
 [project.scripts]
+bound-guided-mobo = "simulation_mobo.cli:main"
 simulation-mobo = "simulation_mobo.cli:main"
 
 [tool.setuptools.packages.find]

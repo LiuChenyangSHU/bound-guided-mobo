@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2 - 2026-11-13
+
+- Renamed the project to Bound-Guided MOBO.
+- Introduced the bound-informed design discovery concept and core workflow ideas.
+- Added the `bound-guided-mobo` command while retaining the existing command alias.
+
 ## 0.1.1 - 2026-11-13
 
 - Streamlined the README and method documentation.

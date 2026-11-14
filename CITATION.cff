@@ -1,12 +1,12 @@
 cff-version: 1.2.0
 message: "Please cite the versioned release when using this software."
 type: software
-title: "Simulation MOBO Framework"
+title: "Bound-Guided MOBO"
 authors:
   - name: "LiuChenyangSHU"
-version: 0.1.1
+version: 0.1.2
 date-released: 2026-11-13
-url: "https://github.com/LiuChenyangSHU/simulation-mobo-framework"
-repository-code: "https://github.com/LiuChenyangSHU/simulation-mobo-framework"
+url: "https://github.com/LiuChenyangSHU/bound-guided-mobo"
+repository-code: "https://github.com/LiuChenyangSHU/bound-guided-mobo"
 license: MIT
-abstract: "A minimal simulator-agnostic framework for multi-objective Bayesian optimization with Gaussian-process surrogates, batch log-EHVI recommendation, and auditable run records."
+abstract: "A modular framework for bound-informed design discovery with Gaussian-process surrogates, batch Bayesian recommendation, feedback-driven search-window policies, and a replaceable simulation module."

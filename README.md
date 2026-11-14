@@ -1,14 +1,40 @@
-# Simulation MOBO Framework
+# Bound-Guided MOBO
 
-A compact, simulator-agnostic framework for closed-loop multi-objective Bayesian
-optimization. It connects bounded design sampling, a replaceable evaluation
-function, Gaussian-process surrogates, batch candidate selection, and auditable
-optimization records.
+**Physics-informed search domains for autonomous simulation-driven design.**
+
+Bound-Guided MOBO is a modular framework for multi-objective design discovery
+with computationally expensive evaluations. It organizes bound-informed design
+spaces, Gaussian-process surrogates, batch Bayesian recommendation, and
+feedback-driven search-window policies around a replaceable simulation module.
+
+The central idea is to use physical knowledge to choose where the search begins,
+then use optimization feedback to decide when a search window should expand.
+This connects physically motivated initialization with staged exploration and
+closed-loop evaluation.
+
+## Core Ideas
+
+- **Start from physical knowledge.** Translate a physical bound or engineering
+  constraint into an initial design interval and feasible parameter space.
+- **Learn from each evaluation.** Update Gaussian-process surrogates and select
+  batches through expected hypervolume improvement to balance competing objectives.
+- **Expand with feedback.** Use the staged-window policy to advance the search
+  interval when improvement plateaus or a stage reaches its evaluation-round budget.
+- **Keep the computational module replaceable.** Connect geometry generation,
+  numerical evaluation, and objective extraction through one callable interface.
+
+For broadband absorber design, a thickness-bandwidth bound such as the Rozanov
+bound can motivate the initial thickness interval. The framework accepts that
+interval as a design-space input, while the window policy supplies the staged
+expansion logic. The same organization applies to other bound-informed design
+problems with competing performance and resource objectives.
 
 ## Workflow
 
 ```text
-Design space and feasibility rules
+Physical bounds and design knowledge
+                 |
+Initial design space and feasibility rules
                  |
         Latin hypercube sampling
                  |
@@ -23,13 +49,18 @@ Design space and feasibility rules
        Pareto set and run summary
 ```
 
+For adaptive-domain studies, the caller connects optimization history to
+`WindowPolicy` and applies the resulting interval to subsequent candidate
+sampling. The standard workflow provides the fixed-domain optimization loop;
+the policy provides the domain-update component.
+
 ## Installation
 
 Python 3.10 or later is required. A virtual environment is recommended.
 
 ```bash
-git clone https://github.com/LiuChenyangSHU/simulation-mobo-framework.git
-cd simulation-mobo-framework
+git clone https://github.com/LiuChenyangSHU/bound-guided-mobo.git
+cd bound-guided-mobo
 python -m venv .venv
 # Linux / macOS
 source .venv/bin/activate
@@ -41,7 +72,7 @@ python -m pip install -e ".[test]"
 ## Quick Start
 
 ```bash
-simulation-mobo --output runs/demo --rounds 3 --seed 42
+bound-guided-mobo --output runs/demo --rounds 3 --seed 42
 ```
 
 The analytic example optimizes two competing quadratic objectives on the unit
@@ -120,21 +151,6 @@ python -m pytest -q
 Tests cover feasibility sampling, normalization, interpolated response metrics,
 window updates, GP-based recommendation, output validation, and stopping rules.
 Dependency versions are listed in [requirements-tested.txt](requirements-tested.txt).
-
-## Citation
-
-For manuscript citations, cite the versioned release rather than an unversioned
-branch. Software metadata is available in [CITATION.cff](CITATION.cff).
-
-```bibtex
-@software{simulation_mobo_framework_2026,
-  author  = {{LiuChenyangSHU}},
-  title   = {Simulation MOBO Framework},
-  year    = {2026},
-  version = {0.1.1},
-  url     = {https://github.com/LiuChenyangSHU/simulation-mobo-framework}
-}
-```
 
 ## License
 
